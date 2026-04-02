@@ -1,14 +1,47 @@
-console.log('log has called');
+const dropArea = document.getElementById("dropArea");
+const fileInput = document.getElementById("fileInput");
 
-// Test import song button and debug it
-const importSong = document.getElementById('fileInput');
-importSong.addEventListener("change", () => {
-    const file = importSong.files[0];
-    if (file) {
-        console.log("File dipilih:", file.name);
-        console.log("Tipe file:", file.type);
-        console.log("Ukuran file:", file.size, "bytes");
-    } else {
-        console.log("Tidak ada file yang dipilih");
-    }
+// Drag & drop song from explorer to playlist
+["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+    dropArea.addEventListener(eventName, e => e.preventDefault());
 });
+
+["dragenter", "dragover"].forEach(eventName => {
+    dropArea.addEventListener(eventName, () => {
+        dropArea.classList.add("highlight");
+  });
+});
+
+["dragleave", "drop"].forEach(eventName => {
+    dropArea.addEventListener(eventName, () => {
+        dropArea.classList.remove("highlight");
+  });
+});
+
+dropArea.addEventListener("drop", (e) => {
+  const files = e.dataTransfer.files;
+
+  if (files.length > 0) {
+        fileInput.files = files;
+        handleFiles(files);
+  }
+});
+
+fileInput.addEventListener("change", () => {
+    handleFiles(fileInput.files);
+});
+
+function handleFiles(files) {
+  [...files].forEach(file => {
+    if (!file.type.startsWith("audio/")) {
+        alert("Must be audio file");
+        return;
+    }
+    console.log("File:", file.name);
+  });
+}
+
+// music controller function
+function shuffleBtn() {
+    console.log('shuffle active');
+}

@@ -12,21 +12,45 @@
         <!-- Music Navigation Bar -->
         <div class="container-music-navbar">
             <div class="media-player-controller">
-                <img src="Media player sprite/Shuffle.png" class="music-controller">
-                <img src="Media player sprite/Previous.png" class="music-controller">
-                <img src="Media player sprite/Pause.png" class="music-controller">
-                <img src="Media player sprite/Play.png" class="music-controller">
-                <img src="Media player sprite/Next.png" class="music-controller">
-                <img src="Media player sprite/Repeat.png" class="music-controller">
+                <button onclick="shuffleBtn" style="background: none; border: none; cursor: pointer;">
+                    <img src="Media player sprite/Shuffle.png" class="music-controller">
+                </button>
+                <button onclick="PreBtn" style="background: none; border: none;"> 
+                    <img src="Media player sprite/Previous.png" class="music-controller">
+                </button>
+                <button onclick="pauseBtn" style="background: none; border: none;">
+                    <img src="Media player sprite/Pause.png" class="music-controller">
+                </button>
+                <button onclick="playBtn" style="background: none; border: none;">
+                    <img src="Media player sprite/Play.png" class="music-controller">
+                </button>
+                <button onclick="nextBtn" style="background: none; border: none;">
+                    <img src="Media player sprite/Next.png" class="music-controller">
+                </button>
+                <button onclick="repeatBtn" style="background: none; border: none;">
+                    <img src="Media player sprite/Repeat.png" class="music-controller">
+                </button>
             </div>
         </div>
         <!-- Song list -->
         <div class="song-display-list">
             <!-- Import song -->
             <input type="file" id="fileInput" accept="audio/*" hidden>
-            <label for="fileInput" class="song-import-field">
+            <label for="fileInput" class="song-import-field" id="dropArea">
                 Import song
             </label>
+            <!-- Playlist display -->
+            <div class="playlist" id="playlist">
+                <div class="song-item">
+                    
+                </div>
+                <div class="song-item">
+
+                </div>
+                <div class="song-item">
+
+                </div>
+            </div>
         </div>
     </div>
 
