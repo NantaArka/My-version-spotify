@@ -105,7 +105,7 @@ body {
 .playlist {
     background-color: rgb(77, 77, 77);
     width: 300px;
-    height: 65%;
+    height: 58%;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -114,13 +114,26 @@ body {
     margin-top: 8%;
     position: absolute;
     padding-bottom: 50px;
+    overflow-y: auto;
 }
 
 .song-item {
     background-color: rgb(94, 94, 94);
     border-radius: 10px;
     border: 1px solid rgb(145, 145, 145);
-    width: 90%;
+    width: 70%;
     height: 70px;
+    padding: 12%;
     margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.song-image {
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    left: 20px;
 }
