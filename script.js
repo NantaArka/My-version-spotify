@@ -41,12 +41,19 @@ function handleFiles(files) {
     const playlistParent = document.getElementById("playlist");
     const div = document.createElement("div");
     const image = document.createElement("img");
-    div.textContent = file.name;
-    div.classList.add("song-item");
+    const songTitle = document.createElement("div");
     image.src = "Image/Music_logo.png";
     image.classList.add("song-image");
+
+    div.classList.add("song-item");
+
+    songTitle.classList.add("song-title");
+    songTitle.textContent = file.name;
+
     playlistParent.appendChild(div);
     div.appendChild(image);
+    div.appendChild(songTitle);
+
     console.log("File:", file.name);
     console.log("Create song playlist elements");
   });
