@@ -1,3 +1,15 @@
+// Song player status & element variables
+let isPlay = false;
+let shuffleSong = false;
+let repeatSong = false;
+
+const shuffle = document.getElementById("shuffle");
+const prev = document.getElementById("prev");
+const play = document.getElementById("play");
+const next = document.getElementById("next");
+const repeat = document.getElementById("repeat");
+
+// Import song variable
 const dropArea = document.getElementById("dropArea");
 const fileInput = document.getElementById("fileInput");
 
@@ -65,5 +77,40 @@ function handleFiles(files) {
 
 // music controller function
 function shuffleBtn() {
-  console.log("shuffle active");
+  shuffle.classList.toggle("shuffle-active");
+  if (!shuffleSong) {
+    shuffleSong = true;
+    console.log("shuffle enabled");
+  }
+  else {
+    shuffleSong = false;
+    console.log("shuffle disabled");
+  }
+}
+function prevBtn() {
+  console.log("prev has clicked");
+}
+function playBtn() {
+  play.classList.toggle("play-active");
+  if (!isPlay) {
+    isPlay = true;
+    console.log("play enabled");
+  }
+  else {
+    console.log("play disabled");
+  }
+}
+function nextBtn() {
+  console.log("next has clicked");
+}
+function repeatBtn() {
+  repeat.classList.toggle("repeat-active");
+  if (!repeatSong) {
+    repeatSong = true;
+    console.log("repeat enabled");
+  }
+  else {
+    repeatSong = false;
+    console.log("repeat disabled");
+  }
 }

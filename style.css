@@ -43,7 +43,6 @@ body {
     width: 30px;
     height: 30px;
     padding: 20px;
-    margin-bottom: 15px;
     border-bottom: 5px solid white;
 }
 
@@ -171,4 +170,40 @@ body {
     flex: 1;
     min-width: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.shuffle-style {
+    background-color: rgba(255, 0, 0, 0);
+    cursor: pointer;
+    border: none;
+}
+.shuffle-active {
+    border-bottom: 3px solid blue;
+}
+.prev-style {
+    background-color: rgba(255, 0, 0, 0);
+    cursor: pointer;
+    border: none;
+}
+.play-style {
+    background-color: rgba(255, 0, 0, 0);
+    cursor: pointer;
+    border: none;
+    border-bottom: 3px solid red;
+}
+.play-active {
+    border-bottom: 3px solid green;
+}
+.next-style {
+    background-color: rgba(255, 0, 0, 0);
+    cursor: pointer;
+    border: none;
+}
+.repeat-style {
+    background-color: rgba(255, 0, 0, 0);
+    cursor: pointer;
+    border: none;
+}
+.repeat-active {
+    border-bottom: 3px solid yellow;
 }

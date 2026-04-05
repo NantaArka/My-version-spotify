@@ -12,22 +12,19 @@
         <!-- Music Navigation Bar -->
         <div class="container-music-navbar">
             <div class="media-player-controller">
-                <button onclick="shuffleBtn" style="background: none; border: none; cursor: pointer;">
+                <button onclick="shuffleBtn()" id="shuffle" class="shuffle-style">
                     <img src="Media player sprite/Shuffle.png" class="music-controller">
                 </button>
-                <button onclick="PreBtn" style="background: none; border: none; cursor: pointer;"> 
+                <button onclick="prevBtn()" id="prev" class="prev-style"> 
                     <img src="Media player sprite/Previous.png" class="music-controller">
                 </button>
-                <button onclick="pauseBtn" style="background: none; border: none; cursor: pointer;">
-                    <img src="Media player sprite/Pause.png" class="music-controller">
-                </button>
-                <button onclick="playBtn" style="background: none; border: none; cursor: pointer;">
+                <button onclick="playBtn()" id="play" class="play-style">
                     <img src="Media player sprite/Play.png" class="music-controller">
                 </button>
-                <button onclick="nextBtn" style="background: none; border: none; cursor: pointer;">
+                <button onclick="nextBtn()" id="next" class="next-style">
                     <img src="Media player sprite/Next.png" class="music-controller">
                 </button>
-                <button onclick="repeatBtn" style="background: none; border: none; cursor: pointer;">
+                <button onclick="repeatBtn()" id="repeat" class="repeat-style">
                     <img src="Media player sprite/Repeat.png" class="music-controller">
                 </button>
             </div>
