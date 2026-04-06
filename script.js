@@ -3,11 +3,18 @@ let isPlay = false;
 let shuffleSong = false;
 let repeatSong = false;
 
+let songData = []; // Song data variables
+let songIndexStatus = 0; // Default = 0\
+let currentURL = null;
+let currentIndex = null;
+
 const shuffle = document.getElementById("shuffle");
 const prev = document.getElementById("prev");
 const play = document.getElementById("play");
 const next = document.getElementById("next");
 const repeat = document.getElementById("repeat");
+
+const player = document.getElementById("player");
 
 // Import song variable
 const dropArea = document.getElementById("dropArea");
@@ -45,9 +52,11 @@ fileInput.addEventListener("change", () => {
 
 function handleFiles(files) {
   let hasInvalidFiles = false;
+  songData = [...files];
+  console.log(songData);
   [...files].forEach(file => {
     if (!file.type.startsWith("audio/")) {
-      hasInvalidFiles = true;      
+      hasInvalidFiles = true;
       return;
     }
     const playlistParent = document.getElementById("playlist");
@@ -81,8 +90,7 @@ function shuffleBtn() {
   if (!shuffleSong) {
     shuffleSong = true;
     console.log("shuffle enabled");
-  }
-  else {
+  } else {
     shuffleSong = false;
     console.log("shuffle disabled");
   }
@@ -91,25 +99,45 @@ function prevBtn() {
   console.log("prev has clicked");
 }
 function playBtn() {
-  play.classList.toggle("play-active");
-  if (!isPlay) {
-    isPlay = true;
-    console.log("play enabled");
-  }
-  else {
+  const file = songData[songIndexStatus];
+
+  if (isPlay) {
+    isPlay = false;
+    player.pause();
     console.log("play disabled");
+    play.classList.remove("play-active");
+  } else if (songData.length > 0){
+    if (currentIndex !== songIndexStatus) {
+      if (currentURL) {
+        URL.revokeObjectURL(currentURL); 
+      }
+      currentURL = URL.createObjectURL(file);
+      player.src = currentURL;
+      currentIndex = songIndexStatus;
+      isPlay = false;
+    }
+    isPlay = true;
+    player.play();
+    console.log("play enabled");
+    play.classList.add("play-active");
   }
 }
 function nextBtn() {
-  console.log("next has clicked");
+  if (!isPlay || songData.length > 0) {
+    songIndexStatus++;
+    console.log("next has clicked");
+    const file = songData[songIndexStatus];
+    const url = URL.createObjectURL(file);
+    player.src = url;
+    player.play();
+  }
 }
 function repeatBtn() {
   repeat.classList.toggle("repeat-active");
   if (!repeatSong) {
     repeatSong = true;
     console.log("repeat enabled");
-  }
-  else {
+  } else {
     repeatSong = false;
     console.log("repeat disabled");
   }
