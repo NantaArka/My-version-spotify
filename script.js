@@ -3,10 +3,13 @@ let isPlay = false;
 let shuffleSong = false;
 let repeatSong = false;
 
-let songData = []; // Song data variables
+let songFiles = []; // Song data variables
 let songIndexStatus = 0; // Default = 0\
 let currentURL = null;
 let currentIndex = null;
+
+let songItems = document.querySelectorAll(".song-item");
+let songItemsArray = [...document.querySelectorAll(".song-item")];
 
 const shuffle = document.getElementById("shuffle");
 const prev = document.getElementById("prev");
@@ -50,10 +53,32 @@ fileInput.addEventListener("change", () => {
   handleFiles(fileInput.files);
 });
 
+// Song autoplay system
+player.addEventListener("ended", () => {
+  console.log("Song has ended");
+  if (!isPlay || songFiles.length > 0) {
+    if (repeatSong) {
+      const file = songFiles[songIndexStatus];
+      const url = URL.createObjectURL(file);
+      player.src = url;
+      player.play();
+      console.log("Playing: " + songFiles[songIndexStatus].name);  
+    }
+    else {
+      songIndexStatus++;
+      const file = songFiles[songIndexStatus];
+      const url = URL.createObjectURL(file);
+      player.src = url;
+      player.play();
+      console.log("Playing: " + songFiles[songIndexStatus].name);
+    }
+  }
+});
+
 function handleFiles(files) {
   let hasInvalidFiles = false;
-  songData = [...files];
-  console.log(songData);
+  songFiles = [...files];
+  console.log(songFiles);
   [...files].forEach(file => {
     if (!file.type.startsWith("audio/")) {
       hasInvalidFiles = true;
@@ -76,7 +101,7 @@ function handleFiles(files) {
     div.appendChild(songTitle);
 
     console.log("File:", file.name);
-    console.log("Create song playlist elements");
+    console.log("Create song playlist element");
   });
   
   if (hasInvalidFiles) {
@@ -96,17 +121,24 @@ function shuffleBtn() {
   }
 }
 function prevBtn() {
-  console.log("prev has clicked");
+  if (!isPlay || songFiles.length > 0) {
+    songIndexStatus--;
+    console.log("Prev has clicked");
+    const file = songFiles[songIndexStatus];
+    const url = URL.createObjectURL(file);
+    player.src = url;
+    player.play();
+  }
 }
 function playBtn() {
-  const file = songData[songIndexStatus];
+  const file = songFiles[songIndexStatus];
 
   if (isPlay) {
     isPlay = false;
     player.pause();
-    console.log("play disabled");
     play.classList.remove("play-active");
-  } else if (songData.length > 0){
+    console.log("Unpausing");
+  } else if (songFiles.length > 0){
     if (currentIndex !== songIndexStatus) {
       if (currentURL) {
         URL.revokeObjectURL(currentURL); 
@@ -118,15 +150,15 @@ function playBtn() {
     }
     isPlay = true;
     player.play();
-    console.log("play enabled");
     play.classList.add("play-active");
+    console.log("Playing: " + songFiles[songIndexStatus].name);
   }
 }
 function nextBtn() {
-  if (!isPlay || songData.length > 0) {
+  if (!isPlay || songFiles.length > 0) {
     songIndexStatus++;
-    console.log("next has clicked");
-    const file = songData[songIndexStatus];
+    console.log("Next has clicked");
+    const file = songFiles[songIndexStatus];
     const url = URL.createObjectURL(file);
     player.src = url;
     player.play();
