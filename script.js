@@ -7,6 +7,7 @@ let songFiles = []; // Song data variables
 let songIndexStatus = 0; // Default = 0\
 let currentURL = null;
 let currentIndex = null;
+let currentSongProgress = 0;
 
 let songItems = document.querySelectorAll(".song-item");
 let songItemsArray = [...document.querySelectorAll(".song-item")];
@@ -66,6 +67,7 @@ player.addEventListener("ended", () => {
     }
     else {
       songIndexStatus++;
+      console.log(songIndexStatus);
       const file = songFiles[songIndexStatus];
       const url = URL.createObjectURL(file);
       player.src = url;
@@ -102,6 +104,7 @@ function handleFiles(files) {
 
     console.log("File:", file.name);
     console.log("Create song playlist element");
+    console.log(songFiles);
   });
   
   if (hasInvalidFiles) {
@@ -132,12 +135,14 @@ function prevBtn() {
 }
 function playBtn() {
   const file = songFiles[songIndexStatus];
-
+  
   if (isPlay) {
     isPlay = false;
     player.pause();
     play.classList.remove("play-active");
     console.log("Unpausing");
+    currentSongProgress = player.currentTime;
+    console.log("Current time: " + currentSongProgress);
   } else if (songFiles.length > 0){
     if (currentIndex !== songIndexStatus) {
       if (currentURL) {
@@ -149,21 +154,38 @@ function playBtn() {
       isPlay = false;
     }
     isPlay = true;
+    player.currentTime = currentSongProgress;
+    console.log("Current time: " + currentSongProgress);
     player.play();
     play.classList.add("play-active");
+    console.log("Song index: " + songIndexStatus);
     console.log("Playing: " + songFiles[songIndexStatus].name);
   }
 }
 function nextBtn() {
   if (!isPlay || songFiles.length > 0) {
-    songIndexStatus++;
-    console.log("Next has clicked");
-    const file = songFiles[songIndexStatus];
-    const url = URL.createObjectURL(file);
-    player.src = url;
-    player.play();
+      if (songIndexStatus >= songFiles.length - 1) {
+        songIndexStatus = 0;
+        console.log("Next has clicked");
+        console.log(songIndexStatus);
+        const file = songFiles[songIndexStatus];
+        const url = URL.createObjectURL(file);
+        player.src = url;
+        player.play();
+        return;
+      } else {
+        songIndexStatus++;
+        console.log("Next has clicked");
+        console.log(songIndexStatus);
+        const file = songFiles[songIndexStatus];
+        const url = URL.createObjectURL(file);
+        player.src = url;
+        player.play();
+        return;
+      } 
   }
 }
+
 function repeatBtn() {
   repeat.classList.toggle("repeat-active");
   if (!repeatSong) {
