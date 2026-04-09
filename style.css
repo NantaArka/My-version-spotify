@@ -8,6 +8,10 @@ body {
     background-color: rgb(24, 24, 24);
 }
 
+@font-face {
+    font-family: "LiberationSans";
+    src: url('Fonts/LiberationSans-Regular-formated.woff2') format('woff2');
+}
 .container {
     display: flex;
     justify-content: center;
@@ -44,6 +48,57 @@ body {
     height: 30px;
     padding: 20px;
     border-bottom: 5px solid white;
+}
+
+.container-song-title-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+}
+.song-image-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    margin-right: 94%;
+    border: 3px solid rgb(133, 133, 133);
+    border-radius: 10px;
+}
+.image-title {
+    width: 70px;
+    height: 70px;   
+}
+.current-song-name {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    font-family: "LiberationSans";
+}
+.song-name-text {
+    width: 300px;
+    color: white;
+    font-size: 20px;
+    margin-left: 7%;
+    position: absolute;
+    margin-bottom: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.artist-name-text {
+    width: 300px;
+    color: rgb(172, 172, 172);
+    font-size: 15px;
+    margin-left: 7%;
+    position: absolute;
+    margin-top: 45px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .song-display-list {
