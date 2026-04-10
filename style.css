@@ -12,6 +12,11 @@ body {
     font-family: "LiberationSans";
     src: url('Fonts/LiberationSans-Regular-formated.woff2') format('woff2');
 }
+@font-face {
+    font-family: "Coolvetica";
+    src: url('Fonts/Coolvetica-Rg.woff2') format('woff2');
+}
+
 .container {
     display: flex;
     justify-content: center;
@@ -76,11 +81,10 @@ body {
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    font-family: "LiberationSans";
 }
 .song-name-text {
     width: 300px;
-    color: white;
+    color: rgb(255, 255, 255);
     font-size: 20px;
     margin-left: 7%;
     position: absolute;
@@ -88,6 +92,7 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .artist-name-text {
     width: 300px;
@@ -99,6 +104,7 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .song-display-list {

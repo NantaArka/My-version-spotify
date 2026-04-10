@@ -84,7 +84,7 @@ player.addEventListener("ended", () => {
 
 function handleFiles(files) {
   let hasInvalidFiles = false;
-  songFiles = [...files];
+  songFiles.push(...files);
   console.log(songFiles);
   [...files].forEach(file => {
     if (!file.type.startsWith("audio/")) {
@@ -129,7 +129,7 @@ function shuffleBtn() {
   }
 }
 function prevBtn() {
-  if (!isPlay && songFiles.length > 0) {
+  if (!isPlay || songFiles.length > 0) {
     if (shuffleSong) {
       const randomSong = Math.floor(Math.random() * songFiles.length);
       songIndexStatus = randomSong;
@@ -139,6 +139,7 @@ function prevBtn() {
       player.play();
       play.classList.add("play-active");
       isPlay = true;
+      currentSongDisplay.style.display = "flex";
       console.log("Playing: " + songFiles[songIndexStatus].name);
       currentSongName.textContent = songFiles[songIndexStatus].name;
       console.log("Song index: " + songIndexStatus);
@@ -146,12 +147,15 @@ function prevBtn() {
     }
     if (songIndexStatus === 0) {
       console.log("Prev has clicked");
+      songIndexStatus = songFiles.length - 1;
       const file = songFiles[songIndexStatus];
       const url = URL.createObjectURL(file);
       player.src = url;
       player.play();
       play.classList.add("play-active");
       isPlay = true;
+      currentSongDisplay.style.display = "flex";
+      currentSongName.textContent = songFiles[songIndexStatus].name;
       console.log("Song index: " + songIndexStatus);
     } else {
       songIndexStatus--;
@@ -162,6 +166,8 @@ function prevBtn() {
       player.play();
       play.classList.add("play-active");
       isPlay = true;
+      currentSongDisplay.style.display = "flex";
+      currentSongName.textContent = songFiles[songIndexStatus].name;
       console.log("Song index: " + songIndexStatus);
     }
   }
@@ -188,6 +194,7 @@ function playBtn() {
     }
     isPlay = true;
     currentSongDisplay.style.display = "flex";
+    currentSongName.textContent = songFiles[songIndexStatus].name;
     player.currentTime = currentSongProgress;
     console.log("Current time: " + currentSongProgress);
     player.play();
@@ -197,7 +204,7 @@ function playBtn() {
   }
 }
 function nextBtn() {
-  if (!isPlay && songFiles.length > 0) {
+  if (!isPlay || songFiles.length > 0) {
     if (shuffleSong) {
       const randomSong = Math.floor(Math.random() * songFiles.length);
       songIndexStatus = randomSong;
@@ -208,6 +215,8 @@ function nextBtn() {
       play.classList.add("play-active");
       isPlay = true;
       console.log("Playing: " + songFiles[songIndexStatus].name);
+      currentSongName.textContent = songFiles[songIndexStatus].name;
+      currentSongDisplay.style.display = "flex";
       currentSongName.textContent = songFiles[songIndexStatus].name;
       return;
     }
@@ -221,6 +230,8 @@ function nextBtn() {
       player.play();
       play.classList.add("play-active");
       isPlay = true;
+      currentSongDisplay.style.display = "flex";
+      currentSongName.textContent = songFiles[songIndexStatus].name;
       return;
     } else {
       songIndexStatus++;
@@ -232,6 +243,8 @@ function nextBtn() {
       player.play();
       play.classList.add("play-active");
       isPlay = true;
+      currentSongDisplay.style.display = "flex";
+      currentSongName.textContent = songFiles[songIndexStatus].name;
       return;
     } 
   }
