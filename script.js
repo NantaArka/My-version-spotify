@@ -20,6 +20,11 @@ const repeat = document.getElementById("repeat");
 
 const player = document.getElementById("player");
 
+// Current song title display
+const currentSongDisplay = document.getElementById("container-song-title-display");
+const currentSongName = document.getElementById("song-name-text");
+const currentSongArtist = document.getElementById("artist-name-text");
+
 // Import song variable
 const dropArea = document.getElementById("dropArea");
 const fileInput = document.getElementById("fileInput");
@@ -124,13 +129,41 @@ function shuffleBtn() {
   }
 }
 function prevBtn() {
-  if (!isPlay || songFiles.length > 0) {
-    songIndexStatus--;
-    console.log("Prev has clicked");
-    const file = songFiles[songIndexStatus];
-    const url = URL.createObjectURL(file);
-    player.src = url;
-    player.play();
+  if (!isPlay && songFiles.length > 0) {
+    if (shuffleSong) {
+      const randomSong = Math.floor(Math.random() * songFiles.length);
+      songIndexStatus = randomSong;
+      const file = songFiles[songIndexStatus];
+      const url = URL.createObjectURL(file);
+      player.src = url;
+      player.play();
+      play.classList.add("play-active");
+      isPlay = true;
+      console.log("Playing: " + songFiles[songIndexStatus].name);
+      currentSongName.textContent = songFiles[songIndexStatus].name;
+      console.log("Song index: " + songIndexStatus);
+      return;
+    }
+    if (songIndexStatus === 0) {
+      console.log("Prev has clicked");
+      const file = songFiles[songIndexStatus];
+      const url = URL.createObjectURL(file);
+      player.src = url;
+      player.play();
+      play.classList.add("play-active");
+      isPlay = true;
+      console.log("Song index: " + songIndexStatus);
+    } else {
+      songIndexStatus--;
+      console.log("Prev has clicked");
+      const file = songFiles[songIndexStatus];
+      const url = URL.createObjectURL(file);
+      player.src = url;
+      player.play();
+      play.classList.add("play-active");
+      isPlay = true;
+      console.log("Song index: " + songIndexStatus);
+    }
   }
 }
 function playBtn() {
@@ -154,6 +187,7 @@ function playBtn() {
       isPlay = false;
     }
     isPlay = true;
+    currentSongDisplay.style.display = "flex";
     player.currentTime = currentSongProgress;
     console.log("Current time: " + currentSongProgress);
     player.play();
@@ -163,26 +197,43 @@ function playBtn() {
   }
 }
 function nextBtn() {
-  if (!isPlay || songFiles.length > 0) {
-      if (songIndexStatus >= songFiles.length - 1) {
-        songIndexStatus = 0;
-        console.log("Next has clicked");
-        console.log(songIndexStatus);
-        const file = songFiles[songIndexStatus];
-        const url = URL.createObjectURL(file);
-        player.src = url;
-        player.play();
-        return;
-      } else {
-        songIndexStatus++;
-        console.log("Next has clicked");
-        console.log(songIndexStatus);
-        const file = songFiles[songIndexStatus];
-        const url = URL.createObjectURL(file);
-        player.src = url;
-        player.play();
-        return;
-      } 
+  if (!isPlay && songFiles.length > 0) {
+    if (shuffleSong) {
+      const randomSong = Math.floor(Math.random() * songFiles.length);
+      songIndexStatus = randomSong;
+      const file = songFiles[songIndexStatus];
+      const url = URL.createObjectURL(file);
+      player.src = url;
+      player.play();
+      play.classList.add("play-active");
+      isPlay = true;
+      console.log("Playing: " + songFiles[songIndexStatus].name);
+      currentSongName.textContent = songFiles[songIndexStatus].name;
+      return;
+    }
+    if (songIndexStatus >= songFiles.length - 1) {
+      songIndexStatus = 0;
+      console.log("Next has clicked");
+      console.log("Song index: " + songIndexStatus);
+      const file = songFiles[songIndexStatus];
+      const url = URL.createObjectURL(file);
+      player.src = url;
+      player.play();
+      play.classList.add("play-active");
+      isPlay = true;
+      return;
+    } else {
+      songIndexStatus++;
+      console.log("Next has clicked");
+      console.log("Song index: " + songIndexStatus);
+      const file = songFiles[songIndexStatus];
+      const url = URL.createObjectURL(file);
+      player.src = url;
+      player.play();
+      play.classList.add("play-active");
+      isPlay = true;
+      return;
+    } 
   }
 }
 

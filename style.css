@@ -51,7 +51,7 @@ body {
 }
 
 .container-song-title-display {
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 2;
