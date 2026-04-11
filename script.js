@@ -86,7 +86,12 @@ function handleFiles(files) {
   let hasInvalidFiles = false;
   songFiles.push(...files);
   console.log(songFiles);
-  [...files].forEach(file => {
+
+  const arr = [...files];
+  for (let i = 0; i < arr.length; i++) {
+    const file = arr[i];
+    const j = i + 1;
+
     if (!file.type.startsWith("audio/")) {
       hasInvalidFiles = true;
       return;
@@ -95,6 +100,20 @@ function handleFiles(files) {
     const div = document.createElement("div");
     const image = document.createElement("img");
     const songTitle = document.createElement("div");
+    const songIndexText = document.createElement("h1");
+    const playButton = document.createElement("button");
+
+    playButton.style.position = "absolute";
+    playButton.style.top = "0";
+    playButton.style.left = "0";
+    playButton.style.width = "100%";
+    playButton.style.height = "100%";
+    playButton.style.opacity = "0";
+
+    playButton.addEventListener("click", function () {
+      playBtn1(i);
+    })
+
     image.src = "Image/Music_logo.png";
     image.classList.add("song-image");
 
@@ -103,19 +122,25 @@ function handleFiles(files) {
     songTitle.classList.add("song-title");
     songTitle.textContent = file.name;
 
+    songIndexText.textContent = j;
+    songIndexText.classList.add("song-index-text");
+
     playlistParent.appendChild(div);
     div.appendChild(image);
     div.appendChild(songTitle);
+    div.appendChild(songIndexText);
+    div.appendChild(playButton);
 
     console.log("File:", file.name);
     console.log("Create song playlist element");
     console.log(songFiles);
-  });
-  
-  if (hasInvalidFiles) {
-    alert("Must be audio file");
+    console.log("Loops index:" + i);
+    };
+    
+    if (hasInvalidFiles) {
+      alert("Must be audio file");
+    }
   }
-}
 
 // music controller function
 function shuffleBtn() {
@@ -182,7 +207,7 @@ function playBtn() {
     console.log("Unpausing");
     currentSongProgress = player.currentTime;
     console.log("Current time: " + currentSongProgress);
-  } else if (songFiles.length > 0){
+  } else if (songFiles.length > 0) {
     if (currentIndex !== songIndexStatus) {
       if (currentURL) {
         URL.revokeObjectURL(currentURL); 
@@ -201,6 +226,33 @@ function playBtn() {
     play.classList.add("play-active");
     console.log("Song index: " + songIndexStatus);
     console.log("Playing: " + songFiles[songIndexStatus].name);
+  }
+}
+function playBtn1(index) {
+  songIndexStatus = index;
+  const file = songFiles[songIndexStatus];
+  if (index) {
+    if (currentIndex !== songIndexStatus) {
+      if (currentURL) {
+        URL.revokeObjectURL(currentURL); 
+      }
+      currentURL = URL.createObjectURL(file);
+      player.src = currentURL;
+      currentIndex = songIndexStatus;
+      isPlay = false;
+    }
+    isPlay = true;
+    currentSongDisplay.style.display = "flex";
+    currentSongName.textContent = songFiles[songIndexStatus].name;
+    player.currentTime = currentSongProgress;
+    console.log("Current time: " + currentSongProgress);
+    player.play();
+    play.classList.add("play-active");
+    console.log("Song index: " + songIndexStatus);
+    console.log("Playing: " + songFiles[songIndexStatus].name);
+  }
+  else {
+    console.log("Index not found");
   }
 }
 function nextBtn() {

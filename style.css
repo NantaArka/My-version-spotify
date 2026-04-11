@@ -218,6 +218,8 @@ body {
     height: 65px;
     position: absolute;
     left: 20px;
+    user-select: none;
+    pointer-events: none;
 }
 .song-title {
     user-select: none;
@@ -231,6 +233,18 @@ body {
     flex: 1;
     min-width: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.song-index-text {
+    position: absolute;
+    user-select: none;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(207, 207, 207);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    left: 10px;
+    font-size: 20px;
 }
 
 .shuffle-style {
