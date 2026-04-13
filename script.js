@@ -16,6 +16,7 @@ let songItemsArray = [...document.querySelectorAll(".song-item")];
 const shuffle = document.getElementById("shuffle");
 const prev = document.getElementById("prev");
 const play = document.getElementById("play");
+const playIcon = document.getElementById("playIcon");
 const next = document.getElementById("next");
 const repeat = document.getElementById("repeat");
 
@@ -113,10 +114,17 @@ function handleFiles(files) {
 
     playButton.addEventListener("click", function () {
       playBtn1(currentIndex);
+
       const parent = this.parentElement; // song-item
       const index = Array.from(parent.parentElement.children).indexOf(parent);
 
-      console.log(index);
+      document.querySelectorAll(".song-item").forEach(item => {
+        item.classList.remove("active");
+      });
+      parent.classList.add("active");
+
+      console.log("Song has clicked");
+      console.log(this.classList);
     })
 
     image.src = "Image/Music_logo.png";
@@ -127,7 +135,7 @@ function handleFiles(files) {
     songTitle.classList.add("song-title");
     songTitle.textContent = file.name;
 
-    songIndexText.textContent = currentIndex;
+    songIndexText.textContent = currentIndex + 1;
     songIndexText.classList.add("song-index-text");
 
     playlistParent.appendChild(div);
@@ -208,6 +216,7 @@ function playBtn() {
   
   if (isPlay) {
     isPlay = false;
+    playIcon.src = "Media player sprite/Play.png";
     player.pause();
     play.classList.remove("play-active");
     console.log("Unpausing");
@@ -224,6 +233,7 @@ function playBtn() {
       isPlay = false;
     }
     isPlay = true;
+    playIcon.src = "Media player sprite/Pause.png";
     currentSongDisplay.style.display = "flex";
     currentSongName.textContent = songFiles[songIndexStatus].name;
     player.currentTime = currentSongProgress;

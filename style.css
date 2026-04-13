@@ -282,3 +282,8 @@ body {
 .repeat-active {
     border-bottom: 3px solid yellow;
 }
+
+.active {
+    border: 3px solid rgb(0, 255, 0);
+    border-radius: 10px;
+}
