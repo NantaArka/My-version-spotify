@@ -5,10 +5,11 @@ let repeatSong = false;
 
 let songFiles = []; // Song data variables
 let currentSongLength = 0;
-let songIndexStatus = 0; // Default = 0\
+let songIndexStatus = 0; // Default = 0
 let currentURL = null;
 let currentIndex = null;
 let currentSongProgress = 0;
+let songIndex = 0;
 
 let songItems = document.querySelectorAll(".song-item");
 let songItemsArray = [...document.querySelectorAll(".song-item")];
@@ -113,15 +114,9 @@ function handleFiles(files) {
     playButton.style.opacity = "0";
 
     playButton.addEventListener("click", function () {
-      playBtn1(currentIndex);
-
-      const parent = this.parentElement; // song-item
-      const index = Array.from(parent.parentElement.children).indexOf(parent);
-
-      document.querySelectorAll(".song-item").forEach(item => {
-        item.classList.remove("active");
-      });
-      parent.classList.add("active");
+      songIndex = currentIndex; // sinkronin index global
+      playBtn1(songIndex);
+      updateActive();
 
       console.log("Song has clicked");
       console.log(this.classList);
@@ -182,6 +177,7 @@ function prevBtn() {
       console.log("Playing: " + songFiles[songIndexStatus].name);
       currentSongName.textContent = songFiles[songIndexStatus].name;
       console.log("Song index: " + songIndexStatus);
+      updateActive();
       return;
     }
     if (songIndexStatus === 0) {
@@ -196,6 +192,7 @@ function prevBtn() {
       currentSongDisplay.style.display = "flex";
       currentSongName.textContent = songFiles[songIndexStatus].name;
       console.log("Song index: " + songIndexStatus);
+      updateActive();
     } else {
       songIndexStatus--;
       console.log("Prev has clicked");
@@ -208,6 +205,7 @@ function prevBtn() {
       currentSongDisplay.style.display = "flex";
       currentSongName.textContent = songFiles[songIndexStatus].name;
       console.log("Song index: " + songIndexStatus);
+      updateActive();
     }
   }
 }
@@ -247,7 +245,7 @@ function playBtn() {
 function playBtn1(index) {
   songIndexStatus = index;
   const file = songFiles[songIndexStatus];
-  if (index) {
+  if (index !== undefined && index !== null) {
     if (currentIndex !== songIndexStatus) {
       if (currentURL) {
         URL.revokeObjectURL(currentURL); 
@@ -258,6 +256,7 @@ function playBtn1(index) {
       isPlay = false;
     }
     isPlay = true;
+    playIcon.src = "Media player sprite/Pause.png";
     currentSongDisplay.style.display = "flex";
     currentSongName.textContent = songFiles[songIndexStatus].name;
     player.currentTime = currentSongProgress;
@@ -279,6 +278,7 @@ function playBtn1(index) {
       isPlay = false;
     }
     isPlay = true;
+    playIcon.src = "Media player sprite/Pause.png";
     currentSongDisplay.style.display = "flex";
     currentSongName.textContent = songFiles[songIndexStatus].name;
     player.currentTime = currentSongProgress;
@@ -304,6 +304,7 @@ function nextBtn() {
       currentSongName.textContent = songFiles[songIndexStatus].name;
       currentSongDisplay.style.display = "flex";
       currentSongName.textContent = songFiles[songIndexStatus].name;
+      updateActive();
       return;
     }
     if (songIndexStatus >= songFiles.length - 1) {
@@ -318,6 +319,9 @@ function nextBtn() {
       isPlay = true;
       currentSongDisplay.style.display = "flex";
       currentSongName.textContent = songFiles[songIndexStatus].name;
+      songItemsArray.forEach(item => item.classList.remove("active"));
+      songItemsArray[songIndex].classList.add("active");
+      updateActive();
       return;
     } else {
       songIndexStatus++;
@@ -331,6 +335,9 @@ function nextBtn() {
       isPlay = true;
       currentSongDisplay.style.display = "flex";
       currentSongName.textContent = songFiles[songIndexStatus].name;
+      songItemsArray.forEach(item => item.classList.remove("active"));
+      songItemsArray[songIndex].classList.add("active");
+      updateActive();
       return;
     } 
   }
@@ -345,4 +352,17 @@ function repeatBtn() {
     repeatSong = false;
     console.log("repeat disabled");
   }
+}
+
+function updateActive() {
+  const items = getItems();
+
+  items.forEach(el => el.classList.remove("active"));
+
+  if (items[songIndex]) {
+    items[songIndex].classList.add("active");
+  }
+}
+function getItems() {
+  return document.querySelectorAll(".song-item");
 }
