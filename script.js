@@ -23,6 +23,9 @@ const repeat = document.getElementById("repeat");
 
 const player = document.getElementById("player");
 
+const songSliderProgress = document.getElementById("songProgress");
+songProgress.max = player.duration;
+
 // Current song title display
 const currentSongDisplay = document.getElementById("container-song-title-display");
 const currentSongName = document.getElementById("song-name-text");
@@ -83,6 +86,24 @@ player.addEventListener("ended", () => {
       console.log("Playing: " + songFiles[songIndexStatus].name);
     }
   }
+});
+
+// Song slider progress
+player.addEventListener("loadedmetadata", () => {
+  songProgress.max = Math.floor(player.duration);
+});
+player.addEventListener("timeupdate", () => {
+  songProgress.value = Math.floor(player.currentTime);
+});
+player.addEventListener("timeupdate", () => {
+  songProgress.value = player.currentTime;
+});
+player.addEventListener("timeupdate", () => {
+  const percent = (player.currentTime / player.duration) * 100;
+  songProgress.style.setProperty("--progress", percent + "%");
+});
+songProgress.addEventListener("input", () => {
+  player.currentTime = songProgress.value;
 });
 
 function handleFiles(files) {
@@ -164,6 +185,7 @@ function shuffleBtn() {
 }
 function prevBtn() {
   if (!isPlay || songFiles.length > 0) {
+    showSeekBar();
     if (shuffleSong) {
       const randomSong = Math.floor(Math.random() * songFiles.length);
       songIndexStatus = randomSong;
@@ -221,6 +243,7 @@ function playBtn() {
     currentSongProgress = player.currentTime;
     console.log("Current time: " + currentSongProgress);
   } else if (songFiles.length > 0) {
+    showSeekBar();
     if (currentIndex !== songIndexStatus) {
       if (currentURL) {
         URL.revokeObjectURL(currentURL); 
@@ -246,6 +269,7 @@ function playBtn1(index) {
   songIndexStatus = index;
   const file = songFiles[songIndexStatus];
   if (index !== undefined && index !== null) {
+    showSeekBar();
     if (currentIndex !== songIndexStatus) {
       if (currentURL) {
         URL.revokeObjectURL(currentURL); 
@@ -291,6 +315,7 @@ function playBtn1(index) {
 }
 function nextBtn() {
   if (!isPlay || songFiles.length > 0) {
+    showSeekBar();
     if (shuffleSong) {
       const randomSong = Math.floor(Math.random() * songFiles.length);
       songIndexStatus = randomSong;
@@ -365,4 +390,8 @@ function updateActive() {
 }
 function getItems() {
   return document.querySelectorAll(".song-item");
+}
+
+function showSeekBar() {
+  songSliderProgress.classList.add("active");
 }

@@ -283,6 +283,79 @@ body {
     border-bottom: 3px solid yellow;
 }
 
+.container-song-slider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 500px;
+    height: 80px;
+    background-color: rgba(0, 0, 255, 0);
+    right: 0px;
+    bottom: 0px;
+    z-index: 1;
+}
+.song-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    opacity: 0;
+    transition: 0.3s;
+}
+.song-progress.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    opacity: 1;
+}
+#songProgress {
+  -webkit-appearance: none;
+  width: 300px;
+  appearance: none;
+  height: 6px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+#songProgress::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #ffffff;
+  border-radius: 5px;
+}
+#songProgress::-moz-range-track {
+  height: 6px;
+  background: #ffffff;
+  border-radius: 5px;
+}
+#songProgress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  display: flex;
+  height: 14px;
+  width: 14px;
+  background: #ffffff;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -4px;
+}
+#songProgress::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  background: #ffffff;
+  border-radius: 3px;
+  cursor: pointer;
+}
+#songProgress {
+  background: linear-gradient(
+    to right,
+    #00ff08 0%,
+    #47c24b var(--progress),
+    #ddd var(--progress),
+    #ddd 100%
+  );
+}
+
 
 .active {
     border: 3px solid rgb(0, 255, 0);
