@@ -23,8 +23,9 @@ const repeat = document.getElementById("repeat");
 
 const player = document.getElementById("player");
 
-const songSliderProgress = document.getElementById("songProgress");
 songProgress.max = player.duration;
+const songSliderProgress = document.getElementById("songProgress");
+const songProgressText = document.getElementById("songProgressText");
 
 // Current song title display
 const currentSongDisplay = document.getElementById("container-song-title-display");
@@ -170,7 +171,7 @@ function handleFiles(files) {
     if (hasInvalidFiles) {
       alert("Must be audio file");
     }
-  }
+}
 
 // music controller function
 function shuffleBtn() {
@@ -197,9 +198,9 @@ function prevBtn() {
       isPlay = true;
       currentSongDisplay.style.display = "flex";
       console.log("Playing: " + songFiles[songIndexStatus].name);
-      currentSongName.textContent = songFiles[songIndexStatus].name;
       console.log("Song index: " + songIndexStatus);
       updateActive();
+      getMetadata();
       return;
     }
     if (songIndexStatus === 0) {
@@ -212,9 +213,9 @@ function prevBtn() {
       play.classList.add("play-active");
       isPlay = true;
       currentSongDisplay.style.display = "flex";
-      currentSongName.textContent = songFiles[songIndexStatus].name;
       console.log("Song index: " + songIndexStatus);
       updateActive();
+      getMetadata();
     } else {
       songIndexStatus--;
       console.log("Prev has clicked");
@@ -225,9 +226,9 @@ function prevBtn() {
       play.classList.add("play-active");
       isPlay = true;
       currentSongDisplay.style.display = "flex";
-      currentSongName.textContent = songFiles[songIndexStatus].name;
       console.log("Song index: " + songIndexStatus);
       updateActive();
+      getMetadata();
     }
   }
 }
@@ -244,6 +245,7 @@ function playBtn() {
     console.log("Current time: " + currentSongProgress);
   } else if (songFiles.length > 0) {
     showSeekBar();
+    getMetadata();
     if (currentIndex !== songIndexStatus) {
       if (currentURL) {
         URL.revokeObjectURL(currentURL); 
@@ -256,7 +258,6 @@ function playBtn() {
     isPlay = true;
     playIcon.src = "Media player sprite/Pause.png";
     currentSongDisplay.style.display = "flex";
-    currentSongName.textContent = songFiles[songIndexStatus].name;
     player.currentTime = currentSongProgress;
     console.log("Current time: " + currentSongProgress);
     player.play();
@@ -270,6 +271,7 @@ function playBtn1(index) {
   const file = songFiles[songIndexStatus];
   if (index !== undefined && index !== null) {
     showSeekBar();
+    getMetadata();
     if (currentIndex !== songIndexStatus) {
       if (currentURL) {
         URL.revokeObjectURL(currentURL); 
@@ -282,7 +284,6 @@ function playBtn1(index) {
     isPlay = true;
     playIcon.src = "Media player sprite/Pause.png";
     currentSongDisplay.style.display = "flex";
-    currentSongName.textContent = songFiles[songIndexStatus].name;
     player.currentTime = currentSongProgress;
     console.log("Current time: " + currentSongProgress);
     player.play();
@@ -304,13 +305,13 @@ function playBtn1(index) {
     isPlay = true;
     playIcon.src = "Media player sprite/Pause.png";
     currentSongDisplay.style.display = "flex";
-    currentSongName.textContent = songFiles[songIndexStatus].name;
     player.currentTime = currentSongProgress;
     console.log("Current time: " + currentSongProgress);
     player.play();
     play.classList.add("play-active");
     console.log("Song index: " + songIndexStatus);
     console.log("Playing: " + songFiles[songIndexStatus].name);
+    getMetadata();
   }
 }
 function nextBtn() {
@@ -326,10 +327,9 @@ function nextBtn() {
       play.classList.add("play-active");
       isPlay = true;
       console.log("Playing: " + songFiles[songIndexStatus].name);
-      currentSongName.textContent = songFiles[songIndexStatus].name;
       currentSongDisplay.style.display = "flex";
-      currentSongName.textContent = songFiles[songIndexStatus].name;
       updateActive();
+      getMetadata();
       return;
     }
     if (songIndexStatus >= songFiles.length - 1) {
@@ -343,10 +343,10 @@ function nextBtn() {
       play.classList.add("play-active");
       isPlay = true;
       currentSongDisplay.style.display = "flex";
-      currentSongName.textContent = songFiles[songIndexStatus].name;
       songItemsArray.forEach(item => item.classList.remove("active"));
       songItemsArray[songIndex].classList.add("active");
       updateActive();
+      getMetadata();
       return;
     } else {
       songIndexStatus++;
@@ -359,10 +359,10 @@ function nextBtn() {
       play.classList.add("play-active");
       isPlay = true;
       currentSongDisplay.style.display = "flex";
-      currentSongName.textContent = songFiles[songIndexStatus].name;
       songItemsArray.forEach(item => item.classList.remove("active"));
       songItemsArray[songIndex].classList.add("active");
       updateActive();
+      getMetadata();
       return;
     } 
   }
@@ -379,6 +379,26 @@ function repeatBtn() {
   }
 }
 
+// JSMEDIATAGS function 
+function getMetadata() {
+  const file = songFiles[songIndexStatus];
+  jsmediatags.read(file, {
+    onSuccess: function(tag) {
+      const title = tag.tags.title;
+      const artist = tag.tags.artist;
+  
+      console.log("Title:", title);
+      console.log("Artist:", artist);
+  
+      currentSongName.textContent = title || file.name;
+      currentSongArtist.textContent = artist || "Unknown Artist";
+    },
+    onError: function(error) {
+      console.log("Error:", error);
+    }
+  });
+}
+
 function updateActive() {
   const items = getItems();
 
@@ -392,6 +412,28 @@ function getItems() {
   return document.querySelectorAll(".song-item");
 }
 
+// Show seek bar
 function showSeekBar() {
-  songSliderProgress.classList.add("active");
+  songSliderProgress.classList.add("song-progress-active");
 }
+
+// Format song porgress text
+function formatTime(time) {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+function updateProgress() {
+  const current = formatTime(player.currentTime);
+  const duration = formatTime(player.duration || 0);
+
+  songProgressText.textContent = `${current} / ${duration}`;
+
+  requestAnimationFrame(updateProgress);
+}
+
+player.addEventListener("play", () => {
+  updateProgress();
+});

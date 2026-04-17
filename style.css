@@ -299,16 +299,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    opacity: 0;
+    opacity: 1;
     transition: 0.3s;
 }
-.song-progress.active {
+.song-progress-active {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
     opacity: 1;
+}
+.song-progress-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding-right: 10px;
 }
 #songProgress {
   -webkit-appearance: none;
