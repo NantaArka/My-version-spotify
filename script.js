@@ -1,7 +1,3 @@
-// IndexedDB system variables
-const request = indexedDB.open("MusicDB", 1);
-let db;
-
 // Song player status & element variables
 let isPlay = false;
 let shuffleSong = false;
@@ -40,15 +36,6 @@ const currentSongArtist = document.getElementById("artist-name-text");
 const dropArea = document.getElementById("dropArea");
 const fileInput = document.getElementById("fileInput");
 
-// IndexedDB system functions
-request.onupgradeneeded = function(e) {
-  db = e.target.result;
-  db.createObjectStore("songs", { keyPath: "id" });
-};
-request.onsuccess = function(e) {
-  db = e.target.result;
-  loadSongs();
-};
 
 // Drag & drop song from explorer to playlist
 ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
@@ -117,41 +104,27 @@ player.addEventListener("timeupdate", () => {
   const percent = (player.currentTime / player.duration) * 100;
   songProgress.style.setProperty("--progress", percent + "%");
 });
+player.addEventListener("play", () => {
+  updateProgress();
+});
 songProgress.addEventListener("input", () => {
   player.currentTime = songProgress.value;
 });
 
 function handleFiles(files) {
   let hasInvalidFiles = false;
-
-  const tx = db.transaction("songs", "readwrite");
-  const store = tx.objectStore("songs");
+  songFiles.push(...files);
 
   const arr = [...files];
-
   for (let i = 0; i < arr.length; i++) {
     const file = arr[i];
+    const j = i + 1;
     const currentIndex = currentSongLength;
 
     if (!file.type.startsWith("audio/")) {
       hasInvalidFiles = true;
-      return  ; // jangan return, biar file lain tetap diproses
+      return;
     }
-
-    // 🔥 bikin object untuk disimpan
-    const song = {
-      id: crypto.randomUUID(),
-      name: file.name,
-      file: file
-    };
-
-    // 👉 simpan ke IndexedDB
-    store.put(song);
-
-    // 👉 simpan ke array (biar langsung bisa dipakai)
-    songFiles.push(song);
-
-    // ===== UI kamu (tetap sama) =====
     const playlistParent = document.getElementById("playlist");
     const div = document.createElement("div");
     const image = document.createElement("img");
@@ -167,10 +140,13 @@ function handleFiles(files) {
     playButton.style.opacity = "0";
 
     playButton.addEventListener("click", function () {
-      songIndex = currentIndex;
+      songIndex = currentIndex; // sinkronin index global
       playBtn1(songIndex);
       updateActive();
-    });
+
+      console.log("Song has clicked");
+      console.log(this.classList);
+    })
 
     image.src = "Image/Music_logo.png";
     image.classList.add("song-image");
@@ -189,16 +165,16 @@ function handleFiles(files) {
     div.appendChild(songIndexText);
     div.appendChild(playButton);
 
+    console.log("File:", file.name);
+    console.log("Create song playlist element");
+    console.log(songFiles);
+    console.log("Loops index:" + i);
     currentSongLength += 1;
-  }
-
-  tx.oncomplete = () => {
-    console.log("Semua lagu tersimpan ke IndexedDB");
-  };
-
-  if (hasInvalidFiles) {
-    alert("Beberapa file bukan audio, jadi dilewati");
-  }
+    };
+    
+    if (hasInvalidFiles) {
+      alert("Must be audio file");
+    }
 }
 
 function loadSongs() {
@@ -513,7 +489,3 @@ function updateProgress() {
 
   requestAnimationFrame(updateProgress);
 }
-
-player.addEventListener("play", () => {
-  updateProgress();
-});
